@@ -1,25 +1,16 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../services/api"; 
 
 function OrderHistory() {
   const [orders, setOrders] = useState([]);
-  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await axios.get(
-          "https://localhost:7079/api/Order/my-orders",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
+        const res = await api.get("/Order/my-orders");
         setOrders(res.data);
       } catch (err) {
-        console.log(err);
+        console.error(err);
         alert("Không load được đơn hàng");
       }
     };
@@ -59,21 +50,17 @@ function OrderHistory() {
               key={order.id}
               className="bg-white rounded-2xl shadow-lg p-6"
             >
-              {/* Order Header */}
+              {/* Header */}
               <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 border-b pb-4 mb-4">
                 <div>
-                  <p className="text-gray-500 text-sm">
-                    Mã đơn hàng
-                  </p>
+                  <p className="text-gray-500 text-sm">Mã đơn hàng</p>
                   <p className="font-semibold text-gray-800">
                     #{order.id}
                   </p>
                 </div>
 
                 <div>
-                  <p className="text-gray-500 text-sm">
-                    Ngày đặt
-                  </p>
+                  <p className="text-gray-500 text-sm">Ngày đặt</p>
                   <p className="font-medium text-gray-700">
                     {new Date(order.orderDate).toLocaleString()}
                   </p>
@@ -90,18 +77,16 @@ function OrderHistory() {
                 </div>
 
                 <div>
-                  <p className="text-gray-500 text-sm">
-                    Tổng tiền
-                  </p>
+                  <p className="text-gray-500 text-sm">Tổng tiền</p>
                   <p className="text-xl font-bold text-blue-600">
-                    {order.totalAmount.toLocaleString()} đ
+                    {order.totalAmount?.toLocaleString()} đ
                   </p>
                 </div>
               </div>
 
               {/* Items */}
               <div className="space-y-4">
-                {order.items.map((item, index) => (
+                {order.items?.map((item, index) => (
                   <div
                     key={index}
                     className="bg-gray-50 rounded-xl p-4 flex flex-col md:flex-row md:justify-between md:items-center gap-3"
@@ -117,11 +102,11 @@ function OrderHistory() {
 
                     <div className="text-right">
                       <p className="text-gray-600 text-sm">
-                        Giá: {item.price.toLocaleString()} đ
+                        Giá: {item.price?.toLocaleString()} đ
                       </p>
                       <p className="font-semibold text-gray-800">
                         Thành tiền:{" "}
-                        {(item.price * item.quantity).toLocaleString()} đ
+                        {(item.price * item.quantity)?.toLocaleString()} đ
                       </p>
                     </div>
                   </div>
