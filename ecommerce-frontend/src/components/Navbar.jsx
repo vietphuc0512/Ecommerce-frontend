@@ -33,7 +33,7 @@ function Navbar({ token, setToken }) {
           >
             Giỏ hàng
           </Link>
-
+<Link to="/admin/products">Quản lý sản phẩm</Link>
           {token && (
             <Link 
               to="/orders" 

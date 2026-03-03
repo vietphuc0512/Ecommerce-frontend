@@ -10,7 +10,7 @@ import Cart from "./pages/Cart";
 import Orders from "./pages/Orders";
 import ProductDetail from "./pages/ProductDetail";
 import OrderHistory from "./pages/OrderHistory";
-
+import ProductManager from "./pages/ProductManager";
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
 
@@ -23,7 +23,14 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login setToken={setToken} />} />
         <Route path="/product/:id" element={<ProductDetail />} />
-
+<Route
+          path="/admin/products"
+          element={
+            <PrivateRoute token={token}>
+              <ProductManager />
+            </PrivateRoute>
+          }
+        />
         <Route
           path="/cart"
           element={
